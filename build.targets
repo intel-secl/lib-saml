@@ -1,0 +1,7 @@
+# A successful build produces the following files:
+saml/target/lib-saml-*-SNAPSHOT-with-dependencies.jar
+saml/target/lib-saml-*-SNAPSHOT-dependencies.zip
+saml/target/lib-saml-*-SNAPSHOT.jar
+saml/target/lib-saml-*-SNAPSHOT-javadoc.zip
+saml-integration/target/saml-integration-*-SNAPSHOT.jar
+saml-integration/target/saml-integration-*-SNAPSHOT-with-dependencies.jar 
