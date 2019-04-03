@@ -84,6 +84,7 @@ public class TrustAssertion {
             Element document = readXml(xml);
             SamlUtil verifier = new SamlUtil(); // ClassNotFoundException, InstantiationException, IllegalAccessException
             boolean isVerified = verifier.verifySAMLSignature(document, trustedSigners);
+            
             if (isVerified) {
                 log.info("Validated signature in xml document");
                 // populate assertions map
@@ -285,18 +286,23 @@ public class TrustAssertion {
             return cert;
         }
 
+        public String getTPMVersion(){
+            String tpmVersion = assertionMap.get("tpmVersion");
+            return tpmVersion;
+        }
+
         public String getVMMOSName() {
-            String vmm_osname = assertionMap.get("VMM_OSName");
+            String vmm_osname = assertionMap.get("osName");
             return vmm_osname;
         }
 
         public boolean isHostTrusted() {
-            String trusted = assertionMap.get("Trusted");
+            String trusted = assertionMap.get("TRUST_OVERALL");
             return trusted != null && trusted.equalsIgnoreCase("true");
         }
 
-        public boolean isHostPlatformTrusted() {
-            String trusted = assertionMap.get("Trusted_PLATFORM");
+        public boolean isHostBiosTrusted() {
+            String trusted = assertionMap.get("TRUST_BIOS");
             return trusted != null && trusted.equalsIgnoreCase("true");
         }
 
@@ -306,7 +312,7 @@ public class TrustAssertion {
         }
 
         public boolean isHostLocationTrusted() {
-            String trusted = assertionMap.get("Trusted_Location");
+            String trusted = assertionMap.get("TRUST_ASSET_TAG");
             return trusted != null && trusted.equalsIgnoreCase("true");
         }
     }
@@ -359,7 +365,7 @@ public class TrustAssertion {
                     }
                     assertionMap.put(attribute.getName(), attributeValue);
                 }
-                hostAssertionMap.put(assertionMap.get("Host_Name"), hostTrustAssertion);
+                hostAssertionMap.put(assertionMap.get("hostName"), hostTrustAssertion);
             }
         }
     }
