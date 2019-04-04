@@ -44,11 +44,14 @@ public class MapFormatterTest {
     private void createInputData() throws IOException {
         inputMap = new HashMap();
         ObjectMapper mapper = new ObjectMapper();
-       // String json = "{\"Location\":null,\"HostName\":\"192.168.30.154\",\"Port\":null,\"BIOS_Name\":\"Intel_VMware\",\"BIOS_Version\":\"s60\",\"BIOS_Oem\":\"Intel Corporation\",\"VMM_Name\":\"ESXi\",\"VMM_Version\":\"5.1-12345\",\"VMM_OSName\":\"VMware_ESXi\",\"VMM_OSVersion\":\"5.1.0\",\"IPAddress\":\"192.168.30.154\",\"AddOn_Connection_String\":\"https://192.168.30.87:443/sdk;Administrator;P@ssw0rd\",\"Description\":\"Test\",\"Email\":\"\"}";
+        // String json = "{\"Location\":null,\"HostName\":\"192.168.30.154\",\"Port\":null,\"BIOS_Name\":\"Intel_VMware\",
+        // \"BIOS_Version\":\"s60\",\"BIOS_Oem\":\"Intel Corporation\",\"VMM_Name\":\"ESXi\",\"VMM_Version\":\"5.1-12345\",
+        // \"VMM_OSName\":\"VMware_ESXi\",\"VMM_OSVersion\":\"5.1.0\",\"IPAddress\":\"192.168.30.154\",
+        // \"AddOn_Connection_String\":\"https://192.168.30.87:443/sdk;Administrator;P@ssw0rd\",
+        // \"Description\":\"Test\",\"Email\":\"\"}";
         inputMap.put("hostName", "192.168.30.254");
         inputMap.put("BIOS_Name","Intel_VMware");
         inputMap.put("BIOS_OEM","Intel_Corpotation");
-       // inputMap = mapper.readValue(json, new TypeReference<Map<String, String>>(){});
         log.debug("Created Input for Map");
 
     }
@@ -70,7 +73,6 @@ public class MapFormatterTest {
 
                     }
                     log.debug("Attribute name {} = {} ", attribute.getName(), attributeValue);
-                    //attributeMap.put(attribute.getName(), attributeValue);
                 }
 
             }
@@ -105,6 +107,5 @@ public class MapFormatterTest {
         log.debug("HostName is {}",inputMap.get("hostName"));
         testSamlAssertion= testMapAssertionFormatter.generateAssertion(testIssuer,assertion);
         assertNotNull(testSamlAssertion);
-        //getAttributeValues();
     }
 }
