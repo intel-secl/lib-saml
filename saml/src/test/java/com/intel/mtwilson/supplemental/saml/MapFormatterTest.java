@@ -83,7 +83,7 @@ public class MapFormatterTest {
     public void testapplyToMapFormatter() throws NoSuchAlgorithmException, CryptographyException, IOException, MarshallingException, GeneralSecurityException, XMLSignatureException, MarshalException  {
         HashMap<String, String> settings = new HashMap<>();
         settings.put("saml.issuer", "http://1.2.3.4/AttestationService");
-        settings.put("saml.keystore.file", "/SAML.jks");
+        settings.put("saml.keystore.file", "/SAML.p12");
         settings.put("saml.validity.seconds", "3600");
         settings.put("saml.keystore.password", "password");
         settings.put("saml.key.alias", "forSigning");
