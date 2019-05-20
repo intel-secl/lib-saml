@@ -11,8 +11,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.intel.kunit.annotations.Integration;
-import org.opensaml.saml.saml2.core.Assertion;
-//import com.intel.mtwilson.lib.common.datatypes.TxtHost;
 import com.intel.mtwilson.supplemental.saml.SAML;
 import com.intel.dcsg.cpg.configuration.MapConfiguration;
 import com.intel.dcsg.cpg.crypto.CryptographyException;
@@ -21,8 +19,6 @@ import com.intel.mtwilson.supplemental.saml.IssuerConfiguration;
 import com.intel.mtwilson.supplemental.saml.JsonFormatter;
 
 import com.intel.mtwilson.supplemental.saml.SamlAssertion;
-//import com.intel.mtwilson.saml.HostWithTagFormatter;
-//import com.intel.mtwilson.saml.TxtHostWithAssetTag;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.security.GeneralSecurityException;
@@ -45,20 +41,15 @@ import com.intel.mtwilson.supplemental.saml.XMLFormatter;
  * @author srege
  */
 public class SamlIntegrationTest {
-
     private SamlAssertion testMapSamlAssertion,testJsonSamlAssertion,testXMLSamlAssertion;
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(SamlIntegrationTest.class);
 
-    
-
-   
-    
    @Integration
     public SamlAssertion generateMapAssertion(String hostAttributes) throws InitializationException, NoSuchAlgorithmException, CryptographyException, IOException, MarshallingException, GeneralSecurityException, XMLSignatureException, MarshalException{
         
         HashMap<String, String> settings = new HashMap<>();
         settings.put("saml.issuer", "http://1.2.3.4/AttestationService");
-        settings.put("saml.keystore.file", "/SAML.jks");
+        settings.put("saml.keystore.file", "/SAML.p12");
         settings.put("saml.validity.seconds", "3600");
         settings.put("saml.keystore.password", "password");
         settings.put("saml.key.alias", "forSigning");
@@ -85,7 +76,7 @@ public class SamlIntegrationTest {
     public SamlAssertion generateJSONAssertion(String key , String hostAttributes) throws InitializationException, NoSuchAlgorithmException, CryptographyException, IOException, MarshallingException, GeneralSecurityException, XMLSignatureException, MarshalException{
         HashMap<String, String> settings = new HashMap<>();
         settings.put("saml.issuer", "http://1.2.3.4/AttestationService");
-        settings.put("saml.keystore.file", "/SAML.jks");
+        settings.put("saml.keystore.file", "/SAML.p12");
         settings.put("saml.validity.seconds", "3600");
         settings.put("saml.keystore.password", "password");
         settings.put("saml.key.alias", "forSigning");
@@ -115,7 +106,7 @@ public class SamlIntegrationTest {
     public SamlAssertion generateXMLAssertion(String key , String hostAttributes) throws InitializationException, NoSuchAlgorithmException, CryptographyException, IOException, MarshallingException, GeneralSecurityException, XMLSignatureException, MarshalException{
         HashMap<String, String> settings = new HashMap<>();
         settings.put("saml.issuer", "http://1.2.3.4/AttestationService");
-        settings.put("saml.keystore.file", "/SAML.jks");
+        settings.put("saml.keystore.file", "/SAML.p12");
         settings.put("saml.validity.seconds", "3600");
         settings.put("saml.keystore.password", "password");
         settings.put("saml.key.alias", "forSigning");
@@ -137,9 +128,4 @@ public class SamlIntegrationTest {
         return testXMLSamlAssertion;
         
     }
-    
-    
-    
-   
-    
 }

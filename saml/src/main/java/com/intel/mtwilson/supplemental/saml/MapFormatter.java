@@ -16,7 +16,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.crypto.MarshalException;
 import javax.xml.crypto.dsig.XMLSignatureException;
-import net.shibboleth.utilities.java.support.xml.ElementSupport;
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.config.InitializationService;
@@ -33,8 +32,6 @@ import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
 import org.opensaml.saml.saml2.core.SubjectConfirmationData;
-import org.opensaml.saml.saml2.core.impl.AssertionMarshaller;
-import org.opensaml.core.xml.config.XMLConfigurationException;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.io.MarshallingException;
@@ -105,8 +102,6 @@ public class MapFormatter implements AssertionFormatter {
         assertion = (Assertion) assertionBuilder.buildObject();
        
         // add host attributes (both for single host and multi-host assertions)
-
-     //   assertion.setIssuer(createIssuer(issuerConfiguration));
         log.debug("Call to applyTo in MapFormatter successful");
         DateTime now = new DateTime();
         assertion.setID("MapAssertion");
@@ -181,8 +176,7 @@ public class MapFormatter implements AssertionFormatter {
         NameID nameId = (NameID) nameIdBuilder.buildObject();
         nameId.setValue(hostName);
         log.debug("Inside createNameID {}",nameId.getValue());
-//            nameId.setNameQualifier(input.getStrNameQualifier()); optional:  
-        nameId.setFormat(NameID.UNSPECIFIED); // !!! CAN ALSO USE X509 SUBJECT FROM HOST CERTIFICATE instead of host name in database   
+        nameId.setFormat(NameID.UNSPECIFIED); // !!! CAN ALSO USE X509 SUBJECT FROM HOST CERTIFICATE instead of host name in database
         return nameId;
     }
         private SubjectConfirmation createSubjectConfirmation(IssuerConfiguration issuerConfiguration) throws InitializationException, UnknownHostException {
@@ -214,14 +208,6 @@ public class MapFormatter implements AssertionFormatter {
                 // Required to add to cache
                 samlAssertion.expiry_ts = confirmationMethod.getNotOnOrAfter().toDate();
             }
-            // SubjectConfirmationData not required to have Address, and the
-            // Java API here is doing a DNS lookup to get the address. If the
-            // local host name is not in /etc/hosts or configured in DNS, this
-            // will fail. 
-            // If we need to restore host address, use "mtwilson.host" configuration
-            // setting instead of performing a lookup here.
-            //InetAddress localhost = InetAddress.getLocalHost();
-            //confirmationMethod.setAddress(localhost.getHostAddress()); // NOTE: This is the ATTESTATION SERVICE IP ADDRESS,  **NOT** THE HOST ADDRESS
             return confirmationMethod;
         }
        private void signAssertion(Element value) throws GeneralSecurityException, XMLSignatureException, MarshalException {

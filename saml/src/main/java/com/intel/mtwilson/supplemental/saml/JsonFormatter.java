@@ -4,13 +4,11 @@
  */
 package com.intel.mtwilson.supplemental.saml;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
-import java.util.List;
 import java.util.logging.Level;
 import javax.xml.crypto.MarshalException;
 import javax.xml.crypto.dsig.XMLSignatureException;
@@ -20,7 +18,6 @@ import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.config.InitializationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.saml.common.SAMLObjectBuilder;
-import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Attribute;
@@ -32,7 +29,6 @@ import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
 import org.opensaml.saml.saml2.core.SubjectConfirmationData;
 import org.opensaml.saml.saml2.core.impl.AssertionMarshaller;
-import org.opensaml.core.xml.config.XMLConfigurationException;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.io.MarshallingException;

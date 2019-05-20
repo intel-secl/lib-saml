@@ -10,7 +10,6 @@ import com.intel.dcsg.cpg.x509.X509Util;
 import com.intel.dcsg.cpg.crypto.CryptographyException;
 import com.intel.mtwilson.xml.XML;
 import java.io.IOException;
-import java.security.KeyStoreException;
 import java.security.PublicKey;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -20,20 +19,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.xml.crypto.MarshalException;
-import javax.xml.crypto.dsig.XMLSignatureException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.config.InitializationService;
-import org.opensaml.core.config.InitializationException;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Attribute;
 import org.opensaml.saml.saml2.core.AttributeStatement;
 import org.opensaml.saml.saml2.core.Statement;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
 import org.opensaml.saml.saml2.core.SubjectConfirmationData;
-import org.opensaml.core.xml.config.XMLConfigurationException;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallerFactory;
@@ -64,7 +59,6 @@ public class TrustAssertion {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private Assertion assertion;
     private HashMap<String, HostTrustAssertion> hostAssertionMap; //   host ->  Map of assertions about the host
-//    private HashMap<String,String> assertionMap;
     private boolean isValid;
     private Exception error;
 
@@ -90,7 +84,6 @@ public class TrustAssertion {
                 // populate assertions map
                 InitializationService.initialize(); // required to load default configs that ship with opensaml that specify how to build and parse the xml (if you don't do this you will get a null unmarshaller when you try to parse xml)
                 assertion = readAssertion(document); // ParserConfigurationException, SAXException, IOException, UnmarshallingException
-//                assertionMap = new HashMap<String,String>();        
                 hostAssertionMap = new HashMap<String, HostTrustAssertion>();
                 populateAssertionMap();
                 isValid = true;
@@ -103,7 +96,6 @@ public class TrustAssertion {
             isValid = false;
             error = e;
             assertion = null;
-//            assertionMap = null;
             hostAssertionMap = null;
         }
     }
@@ -195,7 +187,6 @@ public class TrustAssertion {
          * @throws NullPointerException if isValid() == false
          */
         public String getSubject() {
-//        return assertion.getSubject().getNameID().getValue();
             return assertionMap.get("Host_Name");
         }
 
@@ -205,7 +196,6 @@ public class TrustAssertion {
          * @throws NullPointerException if isValid() == false
          */
         public String getSubjectFormat() {
-//        return assertion.getSubject().getNameID().getFormat();
             return "hostname";
         }
 
@@ -238,15 +228,6 @@ public class TrustAssertion {
         public String getStringAttribute(String name) {
             return assertionMap.get(name);
         }
-
-        /*
-         public Boolean getBooleanAttribute(String name) {
-         String value = assertionMap.get(name);
-         if( value == null ) { 
-         return null;
-         }
-         return Boolean.valueOf(value);
-         }*/
 
         public X509Certificate getAikCertificate() throws CertificateException {
             String pem = assertionMap.get("AIK_Certificate");
