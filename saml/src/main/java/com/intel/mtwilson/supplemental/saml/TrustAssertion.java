@@ -9,10 +9,13 @@ import com.intel.dcsg.cpg.crypto.SamlUtil;
 import com.intel.dcsg.cpg.x509.X509Util;
 import com.intel.dcsg.cpg.crypto.CryptographyException;
 import com.intel.mtwilson.xml.XML;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.PublicKey;
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -234,8 +237,15 @@ public class TrustAssertion {
             if (pem == null || pem.isEmpty()) {
                 return null;
             }
-            X509Certificate cert = X509Util.decodePemCertificate(pem);
-            return cert;
+            try {
+                byte[] aikCertData = Base64.getDecoder().decode(pem);
+                CertificateFactory cf1 = CertificateFactory.getInstance("X509");
+                X509Certificate cert = (X509Certificate) cf1.generateCertificate(new ByteArrayInputStream(aikCertData));
+                return cert;
+            } catch (CertificateException e) {
+                log.debug("Error while getting aik certificate: " + e.toString(), e);
+            }
+            return null;
         }
 
         public PublicKey getAikPublicKey() throws CryptographyException {
@@ -263,17 +273,24 @@ public class TrustAssertion {
             if (pem == null || pem.isEmpty()) {
                 return null;
             }
-            X509Certificate cert = X509Util.decodePemCertificate(pem);
-            return cert;
+             try {
+                byte[] bkCertData = Base64.getDecoder().decode(pem);
+                CertificateFactory cf1 = CertificateFactory.getInstance("X509");
+                X509Certificate cert = (X509Certificate) cf1.generateCertificate(new ByteArrayInputStream(bkCertData));
+                return cert;
+            } catch (CertificateException e) {
+                log.debug("Error while getting binding key certificate: " + e.toString(), e);
+            }
+             return null;
         }
 
         public String getTPMVersion(){
-            String tpmVersion = assertionMap.get("tpmVersion");
+            String tpmVersion = assertionMap.get("TPMVersion");
             return tpmVersion;
         }
 
         public String getVMMOSName() {
-            String vmm_osname = assertionMap.get("osName");
+            String vmm_osname = assertionMap.get("OSName");
             return vmm_osname;
         }
 
@@ -283,7 +300,7 @@ public class TrustAssertion {
         }
 
         public boolean isHostBiosTrusted() {
-            String trusted = assertionMap.get("TRUST_BIOS");
+            String trusted = assertionMap.get("TRUST_PLATFORM");
             return trusted != null && trusted.equalsIgnoreCase("true");
         }
 
@@ -346,7 +363,7 @@ public class TrustAssertion {
                     }
                     assertionMap.put(attribute.getName(), attributeValue);
                 }
-                hostAssertionMap.put(assertionMap.get("hostName"), hostTrustAssertion);
+                hostAssertionMap.put(assertionMap.get("HostName"), hostTrustAssertion);
             }
         }
     }
